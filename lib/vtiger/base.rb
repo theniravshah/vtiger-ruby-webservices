@@ -100,9 +100,10 @@ end
           #puts " endpoint: #{self.endpoint_url}"
            t=URI.split(self.endpoint_url.to_s)
           # puts "host is: " + t[2]   #FIX THIS.
-           ht =Net::HTTP.start(t[2],80, :use_ssl => true, :verify_mode => OpenSSL::SSL::VERIFY_NONE)
-           #ht.use_ssl = true
-           #ht.verify_mode = OpenSSL::SSL::VERIFY_NONE
+                    
+           ht =Net::HTTP.new(t[2],80) #, :use_ssl => true, :verify_mode => OpenSSL::SSL::VERIFY_NONE, :verify_mode => OpenSSL::SSL::VERIFY_NONE)
+           ht.use_ssl = true
+           ht.verify_mode = OpenSSL::SSL::VERIFY_NONE
            body_enc=body.url_encode
           # puts "attemping post: #{self.endpoint_url}#{operation} body: #{body} body_enc= #{body_enc}"
            resp=ht.post(self.endpoint_url+operation,body_enc,response_header)
