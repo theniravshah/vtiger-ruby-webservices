@@ -101,9 +101,12 @@ end
            t=URI.split(self.endpoint_url.to_s)
           # puts "host is: " + t[2]   #FIX THIS.
            ht =Net::HTTP.start(t[2],80)
+           ht.use_ssl = true
+           ht.verify_mode = OpenSSL::SSL::VERIFY_NONE
            body_enc=body.url_encode
           # puts "attemping post: #{self.endpoint_url}#{operation} body: #{body} body_enc= #{body_enc}"
            resp=ht.post(self.endpoint_url+operation,body_enc,response_header)
+           puts resp.body
 
            # p response.body.to_s
            self.json_parse resp.body
@@ -121,7 +124,8 @@ end
           req.use_ssl = true
           req.verify_mode = OpenSSL::SSL::VERIFY_NONE # read into this
           resp = req.get(url.request_uri)
-         
+          puts resp.body
+
           #    req = Net::HTTP::Get.new("#{url.path}?#{url.query}")
           #    resp = Net::HTTP.start(url.host, url.port) {|http|
             #    puts "url path is #{url.path}"
