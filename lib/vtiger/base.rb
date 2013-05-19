@@ -1,4 +1,5 @@
 require 'net/http'
+require 'net/https'
 #require 'yajl'
 require 'rubygems'
 gem 'yajl-ruby'
@@ -115,11 +116,17 @@ end
          # resp= Net::HTTP.get(URI.parse(url))
           url = URI.parse(input_url)
          # puts "inspect url: " + url.inspect
-              req = Net::HTTP::Get.new("#{url.path}?#{url.query}")
-              resp = Net::HTTP.start(url.host, url.port) {|http|
+         
+          req = Net::HTTP.new(url.host, url.port)
+          req.use_ssl = true
+          req.verify_mode = OpenSSL::SSL::VERIFY_NONE # read into this
+          resp = req.get(url.request_uri)
+         
+          #    req = Net::HTTP::Get.new("#{url.path}?#{url.query}")
+          #    resp = Net::HTTP.start(url.host, url.port) {|http|
             #    puts "url path is #{url.path}"
-                http.request(req)
-              }
+          #      http.request(req)
+          #    }
            # puts "HTTP_ASK_GET" + resp.body.to_s
 
 
